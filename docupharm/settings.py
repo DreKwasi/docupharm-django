@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +30,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", ".ngrok.io"]
+ALLOWED_HOSTS = ["localhost", ".ngrok.io", "127.0.0.1"]
 
 
 # Application definition
@@ -76,7 +81,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'docupharm.wsgi.application'
 
-
+AUTH_USER_MODEL = "accounts.Account"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
