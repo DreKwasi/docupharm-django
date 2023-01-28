@@ -5,9 +5,13 @@ from django.db import models
 
 # Custom Account to define create user commands
 class MyAccountManager(BaseUserManager):
-    def create_user(
-        self, first_name, last_name, email, username, password=None
-    ):
+
+    def create_user(self,
+                    first_name,
+                    last_name,
+                    email,
+                    username,
+                    password=None):
         """
         Creates a new user and assign the expected variables to them
         """
@@ -56,9 +60,9 @@ class Account(AbstractBaseUser):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     username = models.CharField(max_length=50, unique=True)
-    email = models.EmailField(
-        max_length=100, unique=True, verbose_name="email address"
-    )
+    email = models.EmailField(max_length=100,
+                              unique=True,
+                              verbose_name="email address")
     phone_number = models.CharField(max_length=50, null=True, blank=True)
     department = models.CharField(max_length=100, blank=True, null=True)
 
@@ -89,18 +93,20 @@ class Account(AbstractBaseUser):
 
 class Location(models.Model):
 
-    city = models.CharField(
-        max_length=100, null=True, blank=True, verbose_name="City"
-    )
-    region = models.CharField(
-        max_length=100, null=True, blank=True, verbose_name="Region"
-    )
+    city = models.CharField(max_length=100,
+                            null=True,
+                            blank=True,
+                            verbose_name="City")
+    region = models.CharField(max_length=100,
+                              null=True,
+                              blank=True,
+                              verbose_name="Region")
     created_date = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name = "Locations"
-
+        verbose_name = "Location"
+        verbose_name_plural = "Locations"
 
 
 class Profile(models.Model):
@@ -116,33 +122,43 @@ class Profile(models.Model):
         ("Pharmacist (B.Pharm)", "Pharmacist (B.Pharm)"),
         ("Pharmacist (Pharm.D)", "Pharmacist (Pharm.D)"),
     )
-    account = models.ForeignKey(
-        Account, on_delete=models.SET_NULL, related_name="accounts_profile")
-    professional_status = models.CharField(
-        choices=status_type_choices, max_length=100, blank=True)
-    gender = models.CharField(
-        max_length=100, choices=gender_type_choices
-    )
-    registration_number = models.CharField(max_length=6, unique=True)
-
+    account = models.ForeignKey(Account,
+                                null=True,
+                                on_delete=models.SET_NULL,
+                                related_name="accounts_profile")
+    professional_status = models.CharField(choices=status_type_choices,
+                                           max_length=100,
+                                           blank=True)
+    gender = models.CharField(max_length=100,
+                              choices=gender_type_choices,
+                              blank=True)
+    registration_number = models.CharField(max_length=6,
+                                           unique=True,
+                                           blank=True,
+                                           null=True)
+    student_id = models.CharField(max_length=20,
+                                  unique=True,
+                                  null=True,
+                                  blank=True)
     phone_regex = RegexValidator(
         regex=r"^\+?1?\d{9,15}$",
-        message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.",
+        message=
+        "Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.",
     )
-    phone_number = models.CharField(
-        validators=[phone_regex], max_length=17, blank=True
-    ) 
+    phone_number = models.CharField(validators=[phone_regex],
+                                    max_length=17,
+                                    blank=True)
     # Validators should be a list
-    
+
     created_date = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name = "Facility"
-        verbose_name_plural = "Facilities"
+        verbose_name = "Profile"
+        verbose_name_plural = "Profiles"
 
     def __str__(self):
-        return self.facility_name
+        return self.account.__str__()
 
 
 class Employer(models.Model):
@@ -150,9 +166,18 @@ class Employer(models.Model):
         ("Hospital", "Hospital"),
         ("Community", "Community"),
     )
-    account = models.ForeignKey(Account, related_name="accounts_employer", on_delete=models.SET_NULL) 
+    account = models.ForeignKey(Account,
+                                related_name="accounts_employer",
+                                null=True,
+                                on_delete=models.SET_NULL)
     place_of_work = models.CharField(max_length=100)
-    location = models.ForeignKey(Location, related_name="employer_locations")
+    location = models.ForeignKey(Location,
+                                 related_name="employer_locations",
+                                 null=True,
+                                 on_delete=models.SET_NULL)
     category = models.CharField(choices=category_choices, max_length=50)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
     
-
+    def __str__(self):
+        return self.account.__str__()
