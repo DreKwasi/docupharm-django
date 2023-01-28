@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+    ngrok:
+        image: docupharm/ngrok
+        depends_on:
+            - web
+        env_file:
+            - ./ngrok/.env
+        ports:
+            - 4040:4040
+
+    web:
+        build: .
+        container_name: docupharm_container
+        command: >
+            bash -c " python manage.py makemigrations &&
+                    python manage.py migrate &&
+                    python manage.py runserver 0.0.0.0:8000"
+        ports:
+            - 8000:8000
+        volumes:
+            - .:/docupharm
+        stdin_open: true
+        tty: true
+        depends_on:
+            - db
+
+    db:
+        image: docupharm_postgres
+        container_name: docupharm_db
+        environment:
+            - POSTGRES_DB=docupharm_db
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=admin
+            - POSTGRES_HOST_AUTH_METHOD=trust
+        volumes:
+            - pgdata:/var/lib/postgres/data
+        ports:
+            - 5555:5432
+
+volumes:
+    pgdata:
