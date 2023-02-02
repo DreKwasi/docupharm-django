@@ -49,7 +49,7 @@ admin.site.register(Profile, ProfileAdmin)
 
 class EmployerAdmin(admin.ModelAdmin):
     list_display = (
-        "account",
+        "profile",
         "place_of_work",
         "location",
         "category",

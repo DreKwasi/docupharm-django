@@ -150,6 +150,7 @@ class Profile(models.Model):
                                     max_length=17,
                                     blank=True)
     # Validators should be a list
+    
 
     created_date = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
@@ -167,8 +168,8 @@ class Employer(models.Model):
         ("Hospital", "Hospital"),
         ("Community", "Community"),
     )
-    account = models.ForeignKey(Account,
-                                related_name="accounts_employer",
+    profile = models.ForeignKey(Profile,
+                                related_name="profile_work_details",
                                 null=True,
                                 on_delete=models.SET_NULL)
     place_of_work = models.CharField(max_length=100)
