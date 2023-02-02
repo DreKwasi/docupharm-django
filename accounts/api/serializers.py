@@ -3,11 +3,24 @@ from accounts.models import Account, Profile, Employer, Location
 
 
 class AccountSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Account
         fields = "__all__"
 
-class ProfileSerializer(serializers.ModelSerializer):
+
+class EmployerSerializer(serializers.ModelSerializer):
+    profile = serializers.SlugRelatedField(slug_field="account",
+                                           queryset=Profile.objects.all(),
+                                           required=False)
+
     class Meta:
-        model= Profile
+        model = Employer
+        fields = "__all__"
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Profile
         fields = "__all__"
