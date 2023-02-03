@@ -92,24 +92,6 @@ class Account(AbstractBaseUser):
         return True
 
 
-class Location(models.Model):
-
-    city = models.CharField(max_length=100,
-                            null=True,
-                            blank=True,
-                            verbose_name="City")
-    region = models.CharField(max_length=100,
-                              null=True,
-                              blank=True,
-                              verbose_name="Region")
-    created_date = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
-
-    class Meta:
-        verbose_name = "Location"
-        verbose_name_plural = "Locations"
-
-
 class Profile(models.Model):
 
     gender_type_choices = (
@@ -150,7 +132,6 @@ class Profile(models.Model):
                                     max_length=17,
                                     blank=True)
     # Validators should be a list
-    
 
     created_date = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
@@ -173,13 +154,10 @@ class Employer(models.Model):
                                 null=True,
                                 on_delete=models.SET_NULL)
     place_of_work = models.CharField(max_length=100)
-    location = models.ForeignKey(Location,
-                                 related_name="employer_locations",
-                                 null=True,
-                                 on_delete=models.SET_NULL)
+    location = models.CharField(max_length=100, null=True, blank=True)
     category = models.CharField(choices=category_choices, max_length=50)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-    
+
     def __str__(self):
         return self.account.__str__()

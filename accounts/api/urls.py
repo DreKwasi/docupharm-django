@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from .views import AccountApiViewset, ProfileApiViewset, EmployerApiViewset
+from .views import AccountApiViewset, ProfileApiViewset, EmployerApiViewset,  LocationCsvAPIView
 
 router = DefaultRouter()
 
@@ -11,4 +11,7 @@ router.register(r"employers", EmployerApiViewset, basename="employers")
 
 # router.register(r"facilities", FacilityApiViewset, basename="facilities")
 
-urlpatterns = [path("/", include(router.urls))]
+urlpatterns = [
+    path("locations_csv/", LocationCsvAPIView.as_view()),
+    path("/", include(router.urls))
+]

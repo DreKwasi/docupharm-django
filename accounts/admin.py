@@ -59,13 +59,3 @@ class EmployerAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Employer, EmployerAdmin)
-
-
-class LocationAdmin(admin.ModelAdmin):
-    list_display = (
-        "city",
-        "region",
-    )
-    readonly_fields = ("created_date",)
-    
-admin.site.register(Location, LocationAdmin)

@@ -8,7 +8,7 @@ def create_profile(sender, instance, created, **kwargs):
         account = instance
     )
     Employer.objects.create(
-        account = instance
+        profile = instance
     )
 
 post_save.connect(create_profile, Account)
