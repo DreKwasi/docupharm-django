@@ -1,9 +1,10 @@
-from interventions.models import InterventionResponses, Interventions, Medications, Patients
+from interventions.models import Interventions, Patients
 from rest_framework import generics, mixins, status, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
-from .serializers import InterventionResponsesSerializer, PatientsSerializer, InterventionsSerializer, MedicationsSerializer
+from .serializers import PatientsSerializer, InterventionsSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication
+from rest_framework.response import Response
 
 
 class CreateListRetrieveViewSet(
@@ -23,19 +24,20 @@ class CreateListRetrieveViewSet(
     pass
 
 
-class InterventionResponsesApiViewset(CreateListRetrieveViewSet):
-    serializer_class = InterventionResponsesSerializer
-    queryset = InterventionResponses.objects.all()
-
-
-class MedicationsApiViewset(CreateListRetrieveViewSet):
-    serializer_class = MedicationsSerializer
-    queryset = Medications.objects.all()
-
-
 class InterventionApiViewset(CreateListRetrieveViewSet):
     serializer_class = InterventionsSerializer
     queryset = Interventions.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            patient = Patients.objects.create(gender="Male")
+            patient.save()
+            serializer.save(patient=patient)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class PatientsApiViewset(CreateListRetrieveViewSet):

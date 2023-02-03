@@ -1,25 +1,10 @@
-from interventions.models import InterventionResponses, Medications, Interventions, Patients
+from interventions.models import Interventions, Patients
 from rest_framework import serializers
 
-
-class InterventionResponsesSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = InterventionResponses
-        fields = "__all__"
-
-
-class MedicationsSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Medications
-        fields = "__all__"
-
-
 class InterventionsSerializer(serializers.ModelSerializer):
-    patients = serializers.SlugRelatedField("name",
-                                            queryset=Patients.objects.all(),
-                                            required=False)
+    patient = serializers.SlugRelatedField("name",
+                                           queryset=Patients.objects.all(),
+                                           required=True)
 
     class Meta:
         model = Interventions
