@@ -159,8 +159,8 @@ REST_FRAMEWORK = {
     ),
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-]
+CORS_ALLOWED_ORIGINS = ["http://localhost:8000", "http://localhost:3000"]
 
-CSRF_TRUSTED_ORIGINS = ["https://*.ngrok.io", "http://localhost:8000"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.ngrok.io", "http://localhost:8000", "http://localhost:3000"
+]
