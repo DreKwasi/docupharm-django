@@ -4,11 +4,11 @@ from .models import Account, Profile, Employer
 
 
 def create_profile(sender, instance, created, **kwargs):
-    Profile.objects.create(
+    profile_instance = Profile.objects.create(
         account = instance
     )
     Employer.objects.create(
-        profile = instance
+        profile = profile_instance
     )
 
 post_save.connect(create_profile, Account)
