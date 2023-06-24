@@ -29,11 +29,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", ".ngrok-free.app", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", ".ngrok-free.app", ]
 
-RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+SERVER_HOSTNAME = os.environ.get("SERVER_HOSTNAME")
+if SERVER_HOSTNAME:
+    ALLOWED_HOSTS.append(SERVER_HOSTNAME)
 
 # Application definition
 
@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     "corsheaders",
     "accounts",
     "interventions",
-    "patients",
 ]
 
 MIDDLEWARE = [
@@ -102,12 +101,12 @@ SIMPLE_JWT = {
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "docupharm_db",
-        "USER": "dre",
-        "PASSWORD": "PSDPnq1LzaQMJj3fkZ13yG7dVd7MrEZ8cT2s6LDYOKg",
-        "HOST": "178.79.157.131",
-        "PORT": "5432"
+        "ENGINE": os.getenv("ENGINE"),
+        "NAME": os.getenv("NAME"),
+        "USER": os.getenv("USER"),
+        "PASSWORD": os.getenv("PASSWORD"),
+        "HOST": os.getenv("HOST"),
+        "PORT": os.getenv("PORT")
     }
 }
 
