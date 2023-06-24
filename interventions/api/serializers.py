@@ -1,18 +1,28 @@
-from interventions.models import Interventions, Patients
+from interventions.models import Intervention, Patient
+from accounts.models import Account
 from rest_framework import serializers
 
-class InterventionsSerializer(serializers.ModelSerializer):
-    patient = serializers.SlugRelatedField("name",
-                                           queryset=Patients.objects.all(),
-                                           required=True)
+
+class InterventionSerializer(serializers.ModelSerializer):
+    patient = serializers.SlugRelatedField(
+        "patient_name", queryset=Patient.objects.all(), required=True
+    )
+    user = serializers.SlugRelatedField(
+        "username", queryset=Account.objects.all(), required=True
+    )
 
     class Meta:
-        model = Interventions
+        model = Intervention
         fields = "__all__"
 
 
-class PatientsSerializer(serializers.ModelSerializer):
+class PatientSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        slug_field="username",
+        queryset=Account.objects.all(),
+        required=False
+    )
 
     class Meta:
-        model = Patients
+        model = Patient
         fields = "__all__"

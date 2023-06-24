@@ -6,18 +6,17 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import AccountSerializer, ProfileSerializer, EmployerSerializer
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import BasicAuthentication
-import pandas as pd
-import numpy as np
+from accounts.filters import AccountFilter
 from django.conf import settings
 import os, json
-from django.http import HttpResponse
+# from rest_framework.pagination import PageNumberPagination    
 
 
 class CreateListRetrieveViewSet(
         mixins.CreateModelMixin,
         mixins.ListModelMixin,
         mixins.RetrieveModelMixin,
+        mixins.DestroyModelMixin,
         mixins.UpdateModelMixin,
         viewsets.GenericViewSet,
 ):
@@ -34,18 +33,23 @@ class CreateListRetrieveViewSet(
 class AccountApiViewset(CreateListRetrieveViewSet):
     serializer_class = AccountSerializer
     queryset = Account.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = AccountFilter    
     permission_classes = [IsAuthenticated]
-    authentication_classes = [BasicAuthentication]
 
 
 class ProfileApiViewset(CreateListRetrieveViewSet):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
+    # permission_classes = [IsAuthenticated]
+    
 
 
 class EmployerApiViewset(CreateListRetrieveViewSet, mixins.DestroyModelMixin):
     serializer_class = EmployerSerializer
     queryset = Employer.objects.all()
+    # permission_classes = [IsAuthenticated]
+    
 
 
 # class LocationApiViewset(CreateListRetrieveViewSet, mixins.DestroyModelMixin):
