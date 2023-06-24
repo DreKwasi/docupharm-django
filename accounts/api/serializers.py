@@ -10,7 +10,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
 
 class EmployerSerializer(serializers.ModelSerializer):
-    profile = serializers.SlugRelatedField(slug_field="account",
+    profile = serializers.SlugRelatedField(slug_field="pk",
                                            queryset=Profile.objects.all(),
                                            required=False)
 
@@ -24,4 +24,3 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = "__all__"
-

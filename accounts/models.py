@@ -160,4 +160,4 @@ class Employer(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.account.__str__()
+        return self.profile.__str__()

@@ -3,7 +3,19 @@ from accounts.models import Account
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.tokens import TokenError, RefreshToken
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        
+        # Custom Claims
+        token['username'] = user.username
+        token['email']  = user.email
+        token['full_name'] = user.first_name + " " + user.last_name
+        
+        return token
 
 class RegisterSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
